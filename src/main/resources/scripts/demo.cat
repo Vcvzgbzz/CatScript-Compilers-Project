@@ -1,0 +1,22 @@
+// String
+var x  = "hello catscript!"
+
+// print
+print(x)
+
+// comparisons
+if( x > 10 ) {
+    print(x)
+}
+
+// lists List<Integer>
+var lst = [1, 2, 3]
+
+// iteration
+for( i in lst ) {
+    print(i)
+}
+
+function foo(x : int, y : String) {
+    print(x)
+}

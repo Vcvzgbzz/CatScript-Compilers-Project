@@ -1,0 +1,47 @@
+#parse('templates/header.vm')
+
+<p>Welcome to CS 446!  This web interface will provide you an easy way to interact with the CatScript compiler you
+    are developing.  Enjoy!</p>
+
+<div>
+    <h3>CatScript</h3>
+    <div name="catscript" id="editor" style="height: 450px; width: 100%">$!code</div>
+</div>
+
+<script>
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/monokai");
+    editor.setOptions({
+        mode: "ace/mode/javascript",
+        fontSize: "14pt",
+        useWorker: false
+    });
+    editor.getSession().reset();
+</script>
+
+
+<div style="margin-top: 8px"
+     hx-vars="src:editor.getValue()" hx-target="#output">
+    <button hx-get="/tokenize">Tokenize</button>
+    <button hx-get="/parse">Parse</button>
+    <button hx-get="/evaluate">Evaluate</button>
+    <button hx-get="/transpile">Transpile</button>
+    <button hx-get="/compile">Compile</button>
+</div>
+
+<form style="margin-top: 8px">
+    Load A File:
+    <select name="file">
+        <option value=""></option>
+        <option value="demo.cat">demo.cat</option>
+    </select>
+    <button>Load</button>
+</form>
+
+<div>
+    <h3>Output</h3>
+    <div id="output">
+    </div>
+</div>
+
+#parse('templates/footer.vm')

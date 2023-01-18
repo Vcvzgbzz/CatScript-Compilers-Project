@@ -12,7 +12,7 @@ Please set up your private repository via these instructions:
 
 - Create a *private* repository in your own account by
     - Going to <https://github.com/new>
-    - Enter the name `csci-468-spring2022-private`
+    - Enter the name `csci-468-spring2023-private`
     - Select `Private`
     - **DO NOT ADD A README.MD or .gitignore!**
     - Navigate to the `Settings` -> `Manage Access` section
@@ -23,7 +23,7 @@ Once your repository is initialized, you can pull it down to your local machine.
 Next, you should add the class repository as an upstream git repo:
 
 ```bash
-$ git remote add upstream https://github.com/msu/csci-468-spring2022.git
+$ git remote add upstream https://github.com/msu/csci-468-spring2023.git
 $ git pull upstream main
 $ git push origin main
 ```

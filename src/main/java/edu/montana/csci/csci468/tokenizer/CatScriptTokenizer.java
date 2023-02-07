@@ -26,7 +26,9 @@ public class CatScriptTokenizer {
     }
 
     private void scanToken() {
+        System.out.println(tokenList);
         if(scanNumber()) {
+
             return;
         }
         if(scanString()) {
@@ -39,8 +41,39 @@ public class CatScriptTokenizer {
     }
 
     private boolean scanString() {
+        int start = postion;
+
+            if (matchAndConsume('"')) {
+
+                if(isAlpha(peek())){
+                    while (isAlpha(peek())) {
+                        takeChar();
+                    }if(matchAndConsume('"')){
+                        tokenList.addToken(STRING, src.substring(start+1, postion-1), start, postion, line, lineOffset);
+                        return true;
+                    }else{
+                        tokenList.addToken(ERROR, "<Unexpected Token: [" + takeChar() + "]>", start, postion, line, lineOffset);
+                    }
+                    return false;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+
+//        if(isAlpha(peek())){
+//
+//            while (isAlpha(peek())) {
+//                takeChar();
+//            }
+//            tokenList.addToken(STRING, src.substring(start, postion), start, postion, line, lineOffset);
+//            return true;
+//        } else {
+//            return false;
+//        }
         // TODO implement string scanning here!
-        return false;
+
     }
 
     private boolean scanIdentifier() {
@@ -77,7 +110,9 @@ public class CatScriptTokenizer {
     private void scanSyntax() {
         // TODO - implement rest of syntax scanning
         //      - implement comments
+
         int start = postion;
+
         if(matchAndConsume('+')) {
             tokenList.addToken(PLUS, "+", start, postion, line, lineOffset);
         } else if(matchAndConsume('-')) {
@@ -96,19 +131,67 @@ public class CatScriptTokenizer {
             } else {
                 tokenList.addToken(EQUAL, "=", start, postion, line, lineOffset);
             }
-        } else {
+        } else if(matchAndConsume('!')) {
+            if (matchAndConsume('=')) {
+                tokenList.addToken(BANG_EQUAL, "!=", start, postion, line, lineOffset);
+            }
+        }else if(matchAndConsume('<')) {
+            if (matchAndConsume('=')) {
+                tokenList.addToken(LESS_EQUAL, "<=", start, postion, line, lineOffset);
+
+            }else{
+                tokenList.addToken(LESS, "<", start, postion, line, lineOffset);
+            }
+        }
+        else if(matchAndConsume('>')) {
+            if (matchAndConsume('=')) {
+                tokenList.addToken(GREATER_EQUAL, ">=", start, postion, line, lineOffset);
+            }else{
+                tokenList.addToken(GREATER, ">", start, postion, line, lineOffset);
+            }
+        }
+         else if(matchAndConsume('(')) {
+            tokenList.addToken(LEFT_PAREN, "(", start, postion, line, lineOffset);
+        }else if(matchAndConsume(')')) {
+            tokenList.addToken(RIGHT_PAREN, ")", start, postion, line, lineOffset);
+        }
+
+
+         else if(matchAndConsume('{')) {
+            tokenList.addToken(LEFT_BRACE, "{", start, postion, line, lineOffset);
+        }else if(matchAndConsume('}')) {
+            tokenList.addToken(RIGHT_BRACE, "}", start, postion, line, lineOffset);
+        }
+        else if(matchAndConsume('[')) {
+            tokenList.addToken(LEFT_BRACKET, "[", start, postion, line, lineOffset);
+        }else if(matchAndConsume(']')) {
+            tokenList.addToken(RIGHT_BRACKET, "]", start, postion, line, lineOffset);
+        }else if(matchAndConsume(':')) {
+            tokenList.addToken(COLON, ":", start, postion, line, lineOffset);
+        }else if(matchAndConsume(',')) {
+            tokenList.addToken(COMMA, ",", start, postion, line, lineOffset);
+        }else if(matchAndConsume('.')) {
+            tokenList.addToken(DOT, ".", start, postion, line, lineOffset);
+        }
+        else if(matchAndConsume('*')) {
+            tokenList.addToken(STAR, "*", start, postion, line, lineOffset);
+        }else {
             tokenList.addToken(ERROR, "<Unexpected Token: [" + takeChar() + "]>", start, postion, line, lineOffset);
         }
     }
 
     private void consumeWhitespace() {
         // TODO update line and lineOffsets
+
+
         while (!tokenizationEnd()) {
             char c = peek();
             if (c == ' ' || c == '\r' || c == '\t') {
+
                 postion++;
                 continue;
             } else if (c == '\n') {
+                line++;
                 postion++;
                 continue;
             }

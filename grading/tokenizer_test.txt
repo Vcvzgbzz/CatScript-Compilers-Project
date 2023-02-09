@@ -24,59 +24,152 @@
 [INFO]  T E S T S
 [INFO] -------------------------------------------------------
 [INFO] Running edu.montana.csci.csci468.tokenizer.CatScriptTokenizerTest
-[ERROR] Tests run: 16, Failures: 8, Errors: 0, Skipped: 0, Time elapsed: 0.029 s <<< FAILURE! - in edu.montana.csci.csci468.tokenizer.CatScriptTokenizerTest
-[ERROR] escapedStrings  Time elapsed: 0.016 s  <<< FAILURE!
-org.opentest4j.AssertionFailedError: expected: <[STRING, EOF]> but was: <[ERROR, IDENTIFIER, ERROR, ERROR, IDENTIFIER, ERROR, EOF]>
+
+-->[<Unexpected Token: [\]>]<-- <Unexpected Token: ["]> 
+-->[<Unexpected Token: [\]>]<-- <Unexpected Token: ["]> asdf 
+
+-->[a]<-- 
+-->[a]<-- b 
+
+-->[var]<-- 
+-->[var]<-- x 
+-->[var]<-- x = 
+
+-->[else]<-- 
+-->[else]<-- false 
+-->[else]<-- false function 
+-->[else]<-- false function for 
+-->[else]<-- false function for if 
+-->[else]<-- false function for if in 
+-->[else]<-- false function for if in not 
+-->[else]<-- false function for if in not null 
+-->[else]<-- false function for if in not null print 
+-->[else]<-- false function for if in not null print return 
+-->[else]<-- false function for if in not null print return true 
+
+-->[1]<-- 
+-->[1]<-- + 
+
+-->[1]<-- 
+-->[1]<-- + 
+
+-->[1]<-- 
+-->[1]<-- + 
+
+-->[1]<-- 
+-->[1]<-- + 
+
+-->[1]<-- 
+-->[1]<-- + 
+
+-->[1]<-- 
+-->[1]<-- + 
+
+
+
+-->[asdf]<-- 
+
+-->[asdf]<-- 
+
+-->[(]<-- 
+-->[(]<-- ) 
+-->[(]<-- ) { 
+-->[(]<-- ) { } 
+-->[(]<-- ) { } [ 
+-->[(]<-- ) { } [ ] 
+-->[(]<-- ) { } [ ] : 
+-->[(]<-- ) { } [ ] : , 
+-->[(]<-- ) { } [ ] : , . 
+-->[(]<-- ) { } [ ] : , . - 
+-->[(]<-- ) { } [ ] : , . - + 
+-->[(]<-- ) { } [ ] : , . - + - 
+-->[(]<-- ) { } [ ] : , . - + - * 
+-->[(]<-- ) { } [ ] : , . - + - * != 
+-->[(]<-- ) { } [ ] : , . - + - * != = 
+-->[(]<-- ) { } [ ] : , . - + - * != = == 
+-->[(]<-- ) { } [ ] : , . - + - * != = == > 
+-->[(]<-- ) { } [ ] : , . - + - * != = == > >= 
+-->[(]<-- ) { } [ ] : , . - + - * != = == > >= < 
+
+-->[a]<-- 
+-->[a]<-- b 
+
+
+
+-->[1]<-- 
+-->[1]<-- 10 
+
+-->[1]<-- 
+-->[1]<-- 10 
+
+-->[1]<-- 
+-->[1]<-- + 
+
+-->[<Unexpected Token: ["]>]<-- 
+-->[<Unexpected Token: ["]>]<-- . 
+
+-->[-]<-- 
+-->[-]<-- 
+-->[-]<-- - 
+
+-->[a]<-- 
+-->[a]<-- b 
+
+-->[ayy]<-- 
+-->[ayy]<-- bee 
+
+
+
+-->[asdf]<-- 
+
+-->[asdf]<-- 
+
+-->[[]<-- 
+-->[[]<-- 1 
+-->[[]<-- 1 , 
+-->[[]<-- 1 , 2 
+-->[[]<-- 1 , 2 , 
+-->[[]<-- 1 , 2 , 3 
+
+-->[a]<-- 
+-->[a]<-- b 
+-->[a]<-- b c 
+-->[a]<-- b c d 
+
+[ERROR] Tests run: 16, Failures: 2, Errors: 2, Skipped: 0, Time elapsed: 0.027 s <<< FAILURE! - in edu.montana.csci.csci468.tokenizer.CatScriptTokenizerTest
+[ERROR] escapedStrings  Time elapsed: 0.013 s  <<< ERROR!
+java.lang.StringIndexOutOfBoundsException: Index 12 out of bounds for length 12
 	at edu.montana.csci.csci468.tokenizer.CatScriptTokenizerTest.escapedStrings(CatScriptTokenizerTest.java:51)
 
-[ERROR] linesAreCorrect  Time elapsed: 0.001 s  <<< FAILURE!
-org.opentest4j.AssertionFailedError: expected: <2> but was: <1>
-	at edu.montana.csci.csci468.tokenizer.CatScriptTokenizerTest.linesAreCorrect(CatScriptTokenizerTest.java:108)
-
-[ERROR] basicString  Time elapsed: 0.001 s  <<< FAILURE!
-org.opentest4j.AssertionFailedError: expected: <[STRING, EOF]> but was: <[ERROR, IDENTIFIER, ERROR, EOF]>
-	at edu.montana.csci.csci468.tokenizer.CatScriptTokenizerTest.basicString(CatScriptTokenizerTest.java:33)
-
-[ERROR] basicSyntax  Time elapsed: 0.001 s  <<< FAILURE!
-org.opentest4j.AssertionFailedError: expected: <[LEFT_PAREN, RIGHT_PAREN, LEFT_BRACE, RIGHT_BRACE, LEFT_BRACKET, RIGHT_BRACKET, COLON, COMMA, DOT, MINUS, PLUS, SLASH, STAR, BANG_EQUAL, EQUAL, EQUAL_EQUAL, GREATER, GREATER_EQUAL, LESS, LESS_EQUAL, EOF]> but was: <[ERROR, ERROR, ERROR, ERROR, ERROR, ERROR, ERROR, ERROR, ERROR, MINUS, PLUS, SLASH, ERROR, ERROR, EQUAL, EQUAL, EQUAL_EQUAL, ERROR, ERROR, EQUAL, ERROR, ERROR, EQUAL, EOF]>
-	at edu.montana.csci.csci468.tokenizer.CatScriptTokenizerTest.basicSyntax(CatScriptTokenizerTest.java:75)
-
 [ERROR] compoundTokensTokenizeProperly  Time elapsed: 0 s  <<< FAILURE!
-org.opentest4j.AssertionFailedError: expected: <[STRING, DOT, STRING, EOF]> but was: <[ERROR, ERROR, ERROR, ERROR, ERROR, EOF]>
+org.opentest4j.AssertionFailedError: expected: <[STRING, DOT, STRING, EOF]> but was: <[ERROR, DOT, ERROR, EOF]>
 	at edu.montana.csci.csci468.tokenizer.CatScriptTokenizerTest.compoundTokensTokenizeProperly(CatScriptTokenizerTest.java:96)
 
-[ERROR] listLiteralTokenization  Time elapsed: 0 s  <<< FAILURE!
-org.opentest4j.AssertionFailedError: expected: <[LEFT_BRACKET, INTEGER, COMMA, INTEGER, COMMA, INTEGER, RIGHT_BRACKET, EOF]> but was: <[ERROR, INTEGER, ERROR, INTEGER, ERROR, INTEGER, ERROR, EOF]>
-	at edu.montana.csci.csci468.tokenizer.CatScriptTokenizerTest.listLiteralTokenization(CatScriptTokenizerTest.java:101)
-
-[ERROR] lineOffsetsAreCorrect  Time elapsed: 0.001 s  <<< FAILURE!
+[ERROR] lineOffsetsAreCorrect  Time elapsed: 0 s  <<< FAILURE!
 org.opentest4j.AssertionFailedError: expected: <0> but was: <-1>
 	at edu.montana.csci.csci468.tokenizer.CatScriptTokenizerTest.lineOffsetsAreCorrect(CatScriptTokenizerTest.java:115)
 
-[ERROR] unterminatedStrings  Time elapsed: 0 s  <<< FAILURE!
-org.opentest4j.AssertionFailedError: expected: <[ERROR, EOF]> but was: <[ERROR, IDENTIFIER, EOF]>
+[ERROR] unterminatedStrings  Time elapsed: 0 s  <<< ERROR!
+java.lang.StringIndexOutOfBoundsException: Index 5 out of bounds for length 5
 	at edu.montana.csci.csci468.tokenizer.CatScriptTokenizerTest.unterminatedStrings(CatScriptTokenizerTest.java:42)
 
 [INFO] 
 [INFO] Results:
 [INFO] 
 [ERROR] Failures: 
-[ERROR]   CatScriptTokenizerTest.basicString:33->CatscriptTestBase.assertTokensAre:63 expected: <[STRING, EOF]> but was: <[ERROR, IDENTIFIER, ERROR, EOF]>
-[ERROR]   CatScriptTokenizerTest.basicSyntax:75->CatscriptTestBase.assertTokensAre:63 expected: <[LEFT_PAREN, RIGHT_PAREN, LEFT_BRACE, RIGHT_BRACE, LEFT_BRACKET, RIGHT_BRACKET, COLON, COMMA, DOT, MINUS, PLUS, SLASH, STAR, BANG_EQUAL, EQUAL, EQUAL_EQUAL, GREATER, GREATER_EQUAL, LESS, LESS_EQUAL, EOF]> but was: <[ERROR, ERROR, ERROR, ERROR, ERROR, ERROR, ERROR, ERROR, ERROR, MINUS, PLUS, SLASH, ERROR, ERROR, EQUAL, EQUAL, EQUAL_EQUAL, ERROR, ERROR, EQUAL, ERROR, ERROR, EQUAL, EOF]>
-[ERROR]   CatScriptTokenizerTest.compoundTokensTokenizeProperly:96->CatscriptTestBase.assertTokensAre:63 expected: <[STRING, DOT, STRING, EOF]> but was: <[ERROR, ERROR, ERROR, ERROR, ERROR, EOF]>
-[ERROR]   CatScriptTokenizerTest.escapedStrings:51->CatscriptTestBase.assertTokensAre:63 expected: <[STRING, EOF]> but was: <[ERROR, IDENTIFIER, ERROR, ERROR, IDENTIFIER, ERROR, EOF]>
+[ERROR]   CatScriptTokenizerTest.compoundTokensTokenizeProperly:96->CatscriptTestBase.assertTokensAre:63 expected: <[STRING, DOT, STRING, EOF]> but was: <[ERROR, DOT, ERROR, EOF]>
 [ERROR]   CatScriptTokenizerTest.lineOffsetsAreCorrect:115 expected: <0> but was: <-1>
-[ERROR]   CatScriptTokenizerTest.linesAreCorrect:108 expected: <2> but was: <1>
-[ERROR]   CatScriptTokenizerTest.listLiteralTokenization:101->CatscriptTestBase.assertTokensAre:63 expected: <[LEFT_BRACKET, INTEGER, COMMA, INTEGER, COMMA, INTEGER, RIGHT_BRACKET, EOF]> but was: <[ERROR, INTEGER, ERROR, INTEGER, ERROR, INTEGER, ERROR, EOF]>
-[ERROR]   CatScriptTokenizerTest.unterminatedStrings:42->CatscriptTestBase.assertTokensAre:63 expected: <[ERROR, EOF]> but was: <[ERROR, IDENTIFIER, EOF]>
+[ERROR] Errors: 
+[ERROR]   CatScriptTokenizerTest.escapedStrings:51->CatscriptTestBase.assertTokensAre:62->CatscriptTestBase.getTokenList:67 » StringIndexOutOfBounds
+[ERROR]   CatScriptTokenizerTest.unterminatedStrings:42->CatscriptTestBase.assertTokensAre:62->CatscriptTestBase.getTokenList:67 » StringIndexOutOfBounds
 [INFO] 
-[ERROR] Tests run: 16, Failures: 8, Errors: 0, Skipped: 0
+[ERROR] Tests run: 16, Failures: 2, Errors: 2, Skipped: 0
 [INFO] 
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD FAILURE
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  1.044 s
-[INFO] Finished at: 2023-02-06T14:08:04-07:00
+[INFO] Total time:  1.027 s
+[INFO] Finished at: 2023-02-08T17:29:06-07:00
 [INFO] ------------------------------------------------------------------------
 [ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:2.22.1:test (default-test) on project csci-468-spring2022: There are test failures.
 [ERROR] 

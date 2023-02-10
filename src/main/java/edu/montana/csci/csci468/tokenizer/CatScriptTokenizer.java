@@ -26,8 +26,10 @@ public class CatScriptTokenizer {
     }
 
     private void scanToken() {
+        lineOffset++;
+        System.out.println("tokenList:"+tokenList.tokens);
+        System.out.println(src.substring(position,position));
         if(scanNumber()) {
-
             return;
         }
         if(scanString()) {
@@ -44,7 +46,6 @@ public class CatScriptTokenizer {
 
         if(matchAndConsume('"')) {
             while (peek() != '\0') {
-
                     //escape escapes
                     if(peek()=='\\'){
                         takeChar();
@@ -83,6 +84,8 @@ public class CatScriptTokenizer {
                 takeChar();
             }
             String value = src.substring(start, position);
+
+            lineOffset=lineOffset+value.length()-1;
             if (KEYWORDS.containsKey(value)) {
                 tokenList.addToken(KEYWORDS.get(value), value, start, position, line, lineOffset);
             } else {
@@ -198,9 +201,6 @@ public class CatScriptTokenizer {
                 continue;
 
 
-            } else{
-                lineOffset++;
-                //System.out.println("COND");
             }
             break;
         }

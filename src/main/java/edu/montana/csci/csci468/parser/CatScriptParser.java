@@ -82,14 +82,15 @@ public class CatScriptParser {
     //============================================================
 
     private Expression parseExpression() {
-        return parseAdditiveExpression();
+        return parseEqualityExpression();
+
     }
 
     private Expression parseAdditiveExpression() {
-        Expression expression = parseUnaryExpression();
+        Expression expression = parseFactorExpression();
         while (tokens.match(PLUS, MINUS)) {
             Token operator = tokens.consumeToken();
-            final Expression rightHandSide = parseUnaryExpression();
+            final Expression rightHandSide = parseFactorExpression();
             AdditiveExpression additiveExpression = new AdditiveExpression(operator, expression, rightHandSide);
             additiveExpression.setStart(expression.getStart());
             additiveExpression.setEnd(rightHandSide.getEnd());
@@ -98,6 +99,42 @@ public class CatScriptParser {
         return expression;
     }
 
+    private Expression parseFactorExpression(){
+        Expression expression = parseUnaryExpression();
+        while (tokens.match(SLASH, STAR)) {
+            Token operator = tokens.consumeToken();
+            final Expression rightHandSide = parseUnaryExpression();
+            FactorExpression factorExpression = new FactorExpression(operator, expression, rightHandSide);
+            factorExpression.setStart(expression.getStart());
+            factorExpression.setEnd(rightHandSide.getEnd());
+            expression = factorExpression;
+        }
+        return expression;
+    }
+    private Expression parseComparisonExpression(){
+        Expression expression = parseAdditiveExpression();
+        while (tokens.match(GREATER, GREATER_EQUAL,LESS,LESS_EQUAL)) {
+            Token operator = tokens.consumeToken();
+            final Expression rightHandSide = parseAdditiveExpression();
+            ComparisonExpression comparisonExpression = new ComparisonExpression(operator, expression, rightHandSide);
+            comparisonExpression.setStart(expression.getStart());
+            comparisonExpression.setEnd(rightHandSide.getEnd());
+            expression = comparisonExpression;
+        }
+        return expression;
+    }
+    private Expression parseEqualityExpression(){
+        Expression expression=parseComparisonExpression();
+        while (tokens.match(EQUAL_EQUAL,BANG_EQUAL)) {
+            Token operator = tokens.consumeToken();
+            final Expression rightHandSide = parseComparisonExpression();
+            EqualityExpression equalityExpression = new EqualityExpression(operator, expression, rightHandSide);
+            equalityExpression.setStart(expression.getStart());
+            equalityExpression.setEnd(rightHandSide.getEnd());
+            expression = equalityExpression;
+        }
+        return expression;
+    }
     private Expression parseUnaryExpression() {
         if (tokens.match(MINUS, NOT)) {
             Token token = tokens.consumeToken();
@@ -117,7 +154,31 @@ public class CatScriptParser {
             IntegerLiteralExpression integerExpression = new IntegerLiteralExpression(integerToken.getStringValue());
             integerExpression.setToken(integerToken);
             return integerExpression;
-        } else {
+        } else if(tokens.match(NULL)){
+            Token nullToken = tokens.consumeToken();
+            NullLiteralExpression nullLiteralExpression = new NullLiteralExpression();
+            nullLiteralExpression.setToken(nullToken);
+            return nullLiteralExpression;
+
+        } else if (tokens.match(FALSE,TRUE)) {
+            Token boolToken=tokens.consumeToken();
+            BooleanLiteralExpression boolLiteralExpression = new BooleanLiteralExpression(boolToken.getType().equals(FALSE)?false:true);
+            boolLiteralExpression.setToken(boolToken);
+            return boolLiteralExpression;
+        } else if (tokens.match(IDENTIFIER)) {
+            Token identifierToken = tokens.consumeToken();
+            IdentifierExpression identifierExpression = new IdentifierExpression(identifierToken.getStringValue());
+            identifierExpression.setToken(identifierToken);
+            return identifierExpression;
+
+        } else if (tokens.match(STRING)) {
+            Token stringToken = tokens.consumeToken();
+            StringLiteralExpression stringLiteralExpression = new StringLiteralExpression(stringToken.getStringValue());
+            stringLiteralExpression.setToken(stringToken);
+            return stringLiteralExpression;
+
+        }
+        {
             SyntaxErrorExpression syntaxErrorExpression = new SyntaxErrorExpression(tokens.consumeToken());
             return syntaxErrorExpression;
         }

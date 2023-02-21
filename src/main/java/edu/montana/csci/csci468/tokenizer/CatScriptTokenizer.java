@@ -27,8 +27,6 @@ public class CatScriptTokenizer {
 
     private void scanToken() {
         lineOffset++;
-        System.out.println("tokenList:"+tokenList.tokens);
-        System.out.println(src.substring(position,position));
         if(scanNumber()) {
             return;
         }
@@ -188,7 +186,7 @@ public class CatScriptTokenizer {
         //System.out.println(tokenList.tokens);
         while (!tokenizationEnd()) {
             char c = peek();
-            System.out.print(lineOffset + "Cha:"+c);
+
             if (c == ' ' || c == '\r' || c == '\t') {
                 //System.out.print(lineOffset+" whitespace ");
                 lineOffset++;
@@ -205,7 +203,7 @@ public class CatScriptTokenizer {
             break;
         }
 
-        System.out.println("END:"+peek()+"  |"+lineOffset);
+
     }
 
     //===============================================================

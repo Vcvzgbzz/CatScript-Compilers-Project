@@ -9,13 +9,7 @@
 [INFO] Copying 5 resources
 [INFO] 
 [INFO] --- maven-compiler-plugin:3.1:compile (default-compile) @ csci-468-spring2022 ---
-[INFO] Changes detected - recompiling the module!
-[WARNING] File encoding has not been set, using platform encoding UTF-8, i.e. build is platform dependent!
-[INFO] Compiling 47 source files to /Users/carson/Projects/msu/csci-468-spring2023/grading/scripts/repos/jadeyn_fincher/target/classes
-[WARNING] /Users/carson/Projects/msu/csci-468-spring2023/grading/scripts/repos/jadeyn_fincher/src/main/java/edu/montana/csci/csci468/bytecode/MethodGenerator.java: /Users/carson/Projects/msu/csci-468-spring2023/grading/scripts/repos/jadeyn_fincher/src/main/java/edu/montana/csci/csci468/bytecode/MethodGenerator.java uses or overrides a deprecated API.
-[WARNING] /Users/carson/Projects/msu/csci-468-spring2023/grading/scripts/repos/jadeyn_fincher/src/main/java/edu/montana/csci/csci468/bytecode/MethodGenerator.java: Recompile with -Xlint:deprecation for details.
-[WARNING] /Users/carson/Projects/msu/csci-468-spring2023/grading/scripts/repos/jadeyn_fincher/src/main/java/edu/montana/csci/csci468/parser/CatscriptType.java: Some input files use unchecked or unsafe operations.
-[WARNING] /Users/carson/Projects/msu/csci-468-spring2023/grading/scripts/repos/jadeyn_fincher/src/main/java/edu/montana/csci/csci468/parser/CatscriptType.java: Recompile with -Xlint:unchecked for details.
+[INFO] Nothing to compile - all classes are up to date
 [INFO] 
 [INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ csci-468-spring2022 ---
 [WARNING] Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
@@ -31,7 +25,7 @@
 [INFO] -------------------------------------------------------
 [INFO] Running edu.montana.csci.csci468.parser.CatscriptParserExpressionsTest
 [ERROR] Tests run: 29, Failures: 0, Errors: 7, Skipped: 0, Time elapsed: 0.034 s <<< FAILURE! - in edu.montana.csci.csci468.parser.CatscriptParserExpressionsTest
-[ERROR] parseUnterminatedFunctionCallExpression  Time elapsed: 0.005 s  <<< ERROR!
+[ERROR] parseUnterminatedFunctionCallExpression  Time elapsed: 0.003 s  <<< ERROR!
 java.lang.ClassCastException: class edu.montana.csci.csci468.parser.expressions.IdentifierExpression cannot be cast to class edu.montana.csci.csci468.parser.expressions.FunctionCallExpression (edu.montana.csci.csci468.parser.expressions.IdentifierExpression and edu.montana.csci.csci468.parser.expressions.FunctionCallExpression are in unnamed module of loader 'app')
 	at edu.montana.csci.csci468.parser.CatscriptParserExpressionsTest.parseUnterminatedFunctionCallExpression(CatscriptParserExpressionsTest.java:110)
 
@@ -71,7 +65,7 @@ Error: Unexpected Token
 
 	at edu.montana.csci.csci468.parser.CatscriptParserExpressionsTest.parseEmptyListLiteralExpression(CatscriptParserExpressionsTest.java:83)
 
-[ERROR] additiveExpressionsCanBeParenthesized  Time elapsed: 0 s  <<< ERROR!
+[ERROR] additiveExpressionsCanBeParenthesized  Time elapsed: 0.001 s  <<< ERROR!
 edu.montana.csci.csci468.parser.ParseErrorException: 
 Parse Errors Occurred:
 
@@ -105,8 +99,8 @@ Error: Incompatible types
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD FAILURE
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  1.855 s
-[INFO] Finished at: 2023-02-22T16:15:21-07:00
+[INFO] Total time:  1.075 s
+[INFO] Finished at: 2023-02-23T07:24:47-07:00
 [INFO] ------------------------------------------------------------------------
 [ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:2.22.1:test (default-test) on project csci-468-spring2022: There are test failures.
 [ERROR] 

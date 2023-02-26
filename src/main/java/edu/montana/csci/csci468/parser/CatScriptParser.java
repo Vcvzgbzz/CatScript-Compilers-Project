@@ -7,6 +7,10 @@ import edu.montana.csci.csci468.tokenizer.Token;
 import edu.montana.csci.csci468.tokenizer.TokenList;
 import edu.montana.csci.csci468.tokenizer.TokenType;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
 import static edu.montana.csci.csci468.tokenizer.TokenType.*;
 
 public class CatScriptParser {
@@ -169,6 +173,10 @@ public class CatScriptParser {
             Token identifierToken = tokens.consumeToken();
             IdentifierExpression identifierExpression = new IdentifierExpression(identifierToken.getStringValue());
             identifierExpression.setToken(identifierToken);
+            if(tokens.match(LEFT_PAREN)){
+                return parseFunctionCall(identifierToken);
+
+            }
             return identifierExpression;
 
         } else if (tokens.match(STRING)) {
@@ -177,10 +185,83 @@ public class CatScriptParser {
             stringLiteralExpression.setToken(stringToken);
             return stringLiteralExpression;
 
-        }
+        } else if (tokens.match(STRING,LEFT_PAREN)) {
+            Token insideExpression = tokens.consumeToken();
+            ParenthesizedExpression expression = new ParenthesizedExpression(parseExpression());
+
+            System.out.println(expression);
+            return expression;
+        } else if (tokens.match(LEFT_BRACKET) ){
+            return parseListLiteral();
+    }
         {
             SyntaxErrorExpression syntaxErrorExpression = new SyntaxErrorExpression(tokens.consumeToken());
             return syntaxErrorExpression;
+        }
+    }
+    private Expression parseFunctionCall(Token identifier) {
+        List<Expression> argumentList = new LinkedList();
+        //FunctionCallExpression functionCallExpression = new FunctionCallExpression();
+        if(tokens.match(LEFT_PAREN)){
+            Token start = tokens.consumeToken();
+
+            if(tokens.matchAndConsume(RIGHT_PAREN)){
+                //handle empty case foo()
+                FunctionCallExpression functionCallExpression = new FunctionCallExpression(identifier.getStringValue(),argumentList);
+                return functionCallExpression;
+            }
+            do{
+                argumentList.add(parseExpression());
+                //System.out.println(list.size());
+
+            }while(tokens.matchAndConsume(COMMA));
+
+            if(tokens.match(RIGHT_PAREN)){
+                Token end = tokens.consumeToken();
+                //list.add(end);
+                FunctionCallExpression functionCallExpression = new FunctionCallExpression(identifier.getStringValue(),argumentList);
+                return functionCallExpression;
+            }else{
+
+
+                FunctionCallExpression functionCallExpression = new FunctionCallExpression(identifier.getStringValue(),argumentList);
+                functionCallExpression.addError(ErrorType.UNTERMINATED_ARG_LIST,tokens.getCurrentToken());
+                return functionCallExpression;
+            }
+        }else{
+            return null;
+        }
+
+    }
+    private Expression parseListLiteral(){
+        System.out.println("list literal");
+        List<Expression> list = new LinkedList();
+        //ArrayList list = new ArrayList<Expression>();
+        if(tokens.match(LEFT_BRACKET)){
+            Token start = tokens.consumeToken();
+
+            if(tokens.matchAndConsume(RIGHT_BRACKET)){
+                ListLiteralExpression listLiteralExpression = new ListLiteralExpression(list);
+                return listLiteralExpression;
+            }
+            do{
+                list.add(parseExpression());
+                System.out.println(list.size());
+
+            }while(tokens.matchAndConsume(COMMA));
+
+            if(tokens.match(RIGHT_BRACKET)){
+                Token end = tokens.consumeToken();
+                //list.add(end);
+                ListLiteralExpression listLiteralExpression = new ListLiteralExpression(list);
+                return listLiteralExpression;
+            }else{
+                ListLiteralExpression listLiteralExpression = new ListLiteralExpression(list);
+                listLiteralExpression.addError(ErrorType.UNTERMINATED_LIST,tokens.getCurrentToken());
+                return listLiteralExpression;
+            }
+        }else{
+            return null;
         }
     }
 

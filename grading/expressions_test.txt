@@ -33,7 +33,7 @@ list literal
 3
 list literal
 ParenthesizedExpression
-[INFO] Tests run: 29, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.029 s - in edu.montana.csci.csci468.parser.CatscriptParserExpressionsTest
+[INFO] Tests run: 29, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.037 s - in edu.montana.csci.csci468.parser.CatscriptParserExpressionsTest
 [INFO] 
 [INFO] Results:
 [INFO] 
@@ -42,6 +42,6 @@ ParenthesizedExpression
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  1.027 s
-[INFO] Finished at: 2023-02-27T07:38:47-07:00
+[INFO] Total time:  1.131 s
+[INFO] Finished at: 2023-02-27T10:05:15-07:00
 [INFO] ------------------------------------------------------------------------

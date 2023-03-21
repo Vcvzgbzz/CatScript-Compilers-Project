@@ -193,17 +193,17 @@ public class CatScriptParser {
 
             if(tokens.match(IDENTIFIER)){
                 variableStatement.setVariableName(tokens.consumeToken().getStringValue());
-            }else{
 
-            }
             if(tokens.matchAndConsume(COLON)){
                 TypeLiteral type = parseTypeExpression();
-                variableStatement.setExplicitType(type.getType());
 
+
+                variableStatement.setExplicitType(type.getType());
             }
             require(EQUAL,variableStatement);
             variableStatement.setExpression(parseExpression());
-            return variableStatement;
+            return variableStatement; }
+
         }
         return null;
     }
@@ -269,15 +269,30 @@ public class CatScriptParser {
 
     }
     private Statement parseFunctionCallStatement(Token id){
-//        FunctionCallStatement functionCallStatement = new FunctionCallStatement();
-//
-//        functionCallStatement.setStart(id);
-//        require(LEFT_PAREN,functionCallStatement);
-//
-//        //functionCallStatement.
-//        if(e != null){
-//            return e;
-//        }
+        if(tokens.matchAndConsume(LEFT_PAREN)){
+            List<Expression> expressionList = new LinkedList<>();
+
+
+            if(tokens.matchAndConsume(RIGHT_PAREN)){
+                FunctionCallExpression functionCallExpression = new FunctionCallExpression(id.getStringValue(), expressionList);
+                FunctionCallStatement functionCallStatement = new FunctionCallStatement(functionCallExpression);
+                functionCallStatement.setStart(id);
+                return functionCallStatement;
+            }else{
+                do{
+                    expressionList.add(parseExpression());
+                }while(tokens.matchAndConsume(COMMA));
+                FunctionCallExpression functionCallExpression = new FunctionCallExpression(id.getStringValue(), expressionList);
+                FunctionCallStatement functionCallStatement = new FunctionCallStatement(functionCallExpression);
+                functionCallStatement.setStart(id);
+                require(RIGHT_PAREN,functionCallStatement);
+                return functionCallStatement;
+            }
+
+
+        }
+
+
         return null;
     }
     private Statement parseForStatement(){

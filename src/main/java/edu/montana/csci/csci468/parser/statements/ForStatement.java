@@ -8,6 +8,7 @@ import edu.montana.csci.csci468.parser.ParseError;
 import edu.montana.csci.csci468.parser.SymbolTable;
 import edu.montana.csci.csci468.parser.expressions.Expression;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -73,7 +74,16 @@ public class ForStatement extends Statement {
     //==============================================================
     @Override
     public void execute(CatscriptRuntime runtime) {
-        super.execute(runtime);
+
+        Iterable listToIterateOver = (Iterable) expression.evaluate(runtime);
+        runtime.pushScope();
+        for(Object currentValue:listToIterateOver){
+            runtime.setValue(variableName,currentValue);
+            for(Statement statement:body){
+                statement.execute(runtime);
+            }
+        }
+        runtime.popScope();
     }
 
     @Override

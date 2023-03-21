@@ -61,12 +61,15 @@ public class UnaryExpression extends Expression {
 
     @Override
     public Object evaluate(CatscriptRuntime runtime) {
-        Object rhsValue = getRightHandSide().evaluate(runtime);
+
         if (this.isMinus()) {
+            Object rhsValue = getRightHandSide().evaluate(runtime);
             return -1 * (Integer) rhsValue;
-        } else {
-            return null; // TODO handle boolean NOT
+        } else if(operator.getType().equals(TokenType.NOT)) {
+            Boolean rhsValue = (Boolean) getRightHandSide().evaluate(runtime);
+            return  !rhsValue;
         }
+        return null;
     }
 
     @Override

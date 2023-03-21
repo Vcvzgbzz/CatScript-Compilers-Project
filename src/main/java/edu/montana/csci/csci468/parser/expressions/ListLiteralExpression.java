@@ -47,7 +47,11 @@ public class ListLiteralExpression extends Expression {
 
     @Override
     public Object evaluate(CatscriptRuntime runtime) {
-        return super.evaluate(runtime);
+        LinkedList<Object> objects = new LinkedList<>();
+        for(Expression value:values){
+           objects.add(value.evaluate(runtime));
+        }
+        return objects;
     }
 
     @Override

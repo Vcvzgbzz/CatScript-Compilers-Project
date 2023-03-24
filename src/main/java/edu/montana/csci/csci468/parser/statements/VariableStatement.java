@@ -70,7 +70,8 @@ public class VariableStatement extends Statement {
     //==============================================================
     @Override
     public void execute(CatscriptRuntime runtime) {
-        super.execute(runtime);
+        Object e = expression.evaluate(runtime);
+        runtime.setValue(variableName,e);
     }
 
     @Override

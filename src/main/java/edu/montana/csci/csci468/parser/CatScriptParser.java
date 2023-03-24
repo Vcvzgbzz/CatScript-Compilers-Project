@@ -224,23 +224,20 @@ public class CatScriptParser {
             }
 
             ifStatement.setTrueStatements(statementList);
-            require(RIGHT_BRACE,ifStatement,ErrorType.UNEXPECTED_TOKEN);
+            require(RIGHT_BRACE,ifStatement);
             if(tokens.matchAndConsume(ELSE)){
-                Statement layeredIf = parseIfStatement();
-                if(layeredIf!=null){
 
-                }else{
                     require(LEFT_BRACE,ifStatement);
                     List<Statement> statementListElse = new LinkedList();
                     Statement pieceStmtElse = null;
                     while(tokens.hasMoreTokens()&&!tokens.match(RIGHT_BRACE)) {
                         pieceStmtElse=parseStatement();
-                        statementList.add(pieceStmtElse);
+                        statementListElse.add(pieceStmtElse);
                     }
 
                     ifStatement.setElseStatements(statementListElse);
                     require(RIGHT_BRACE,ifStatement,ErrorType.UNEXPECTED_TOKEN);
-                }
+
             }
         return ifStatement;
         }
@@ -464,9 +461,11 @@ public class CatScriptParser {
             stringLiteralExpression.setToken(stringToken);
             return stringLiteralExpression;
 
-        } else if (tokens.match(STRING,LEFT_PAREN)) {
-            Token insideExpression = tokens.consumeToken();
+        } else if (tokens.match(LEFT_PAREN)) {
+            Token start = tokens.consumeToken();
             ParenthesizedExpression expression = new ParenthesizedExpression(parseExpression());
+            expression.setStart(start);
+            require(RIGHT_PAREN,expression);
 
             return expression;
         } else if (tokens.match(LEFT_BRACKET) ){

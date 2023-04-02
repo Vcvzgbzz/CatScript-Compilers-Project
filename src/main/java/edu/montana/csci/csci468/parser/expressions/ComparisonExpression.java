@@ -71,6 +71,7 @@ public class ComparisonExpression extends Expression {
 
     @Override
     public Object evaluate(CatscriptRuntime runtime) {
+
         Integer lhsValue = (Integer) leftHandSide.evaluate(runtime);
         Integer rhsValue = (Integer) rightHandSide.evaluate(runtime);
         if(operator.getType().equals(GREATER)){

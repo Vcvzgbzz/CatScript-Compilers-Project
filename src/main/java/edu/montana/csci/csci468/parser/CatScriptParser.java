@@ -283,6 +283,7 @@ public class CatScriptParser {
                 FunctionCallStatement functionCallStatement = new FunctionCallStatement(functionCallExpression);
                 functionCallStatement.setStart(id);
                 require(RIGHT_PAREN,functionCallStatement);
+
                 return functionCallStatement;
             }
 

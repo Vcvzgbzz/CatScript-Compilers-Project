@@ -75,7 +75,7 @@ public class IfStatement extends Statement {
             for(Statement trueStatement:trueStatements){
                 trueStatement.execute(runtime);
             }
-        }if(Boolean.FALSE.equals(conditionalResult)){
+        }else{
             for(Statement elseStatement:elseStatements){
                 elseStatement.execute(runtime);
             }

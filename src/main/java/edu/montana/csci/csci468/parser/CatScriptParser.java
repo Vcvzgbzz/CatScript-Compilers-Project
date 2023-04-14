@@ -8,6 +8,7 @@ import edu.montana.csci.csci468.tokenizer.TokenList;
 import edu.montana.csci.csci468.tokenizer.TokenType;
 
 import javax.swing.plaf.nimbus.State;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -28,7 +29,7 @@ public class CatScriptParser {
         Expression expression = null;
         try {
             expression = parseExpression();
-        } catch(RuntimeException re) {
+        } catch(CatscriptParseException pe) {
             // ignore :)
         }
         if (expression == null || tokens.hasMoreTokens()) {
@@ -151,39 +152,57 @@ public class CatScriptParser {
         return typeLiteral;
     }
     private Statement parseStatement() {
-        Statement printStmt = parsePrintStatement();
-        if (printStmt != null) {
-            return printStmt;
-        }
-        Statement forStmt = parseForStatement();
-        if (forStmt != null) {
-            return forStmt;
-        }
-        Statement ifStmt = parseIfStatement();
-        if(ifStmt!=null){
-            return ifStmt;
-        }
+        try{
+            Statement printStmt = parsePrintStatement();
+            if (printStmt != null) {
+                return printStmt;
+            }
+            Statement forStmt = parseForStatement();
+            if (forStmt != null) {
+                return forStmt;
+            }
+            Statement ifStmt = parseIfStatement();
+            if(ifStmt!=null){
+                return ifStmt;
+            }
 
-        Statement returnStmt= parseReturnStatement();{
-            if(returnStmt != null){
-                return returnStmt;
+            Statement returnStmt= parseReturnStatement();{
+                if(returnStmt != null){
+                    return returnStmt;
+                }
             }
-        }
-        Statement assignmentOrFuncCall = parseAssignmentOrFunctionCallStatement();
-        if(assignmentOrFuncCall!=null){
-            return  assignmentOrFuncCall;
-        }
-        Statement variableStatement = parseVariableStatement();
-        if(variableStatement!=null){
-            return variableStatement;
-        }
-        if(currentFunctionDefinition !=null){
-            Statement stmt =parseReturnStatement();
-            if(stmt!=null){
-                return stmt;
+            Statement assignmentOrFuncCall = parseAssignmentOrFunctionCallStatement();
+            if(assignmentOrFuncCall!=null){
+                return  assignmentOrFuncCall;
             }
+            Statement variableStatement = parseVariableStatement();
+            if(variableStatement!=null){
+                return variableStatement;
+            }
+            if(currentFunctionDefinition !=null){
+                Statement stmt =parseReturnStatement();
+                if(stmt!=null){
+                    return stmt;
+                }
+            }
+            throwParseError();
+            return null;
+        }catch (CatscriptParseException catScriptParseException) {
+            SyntaxErrorStatement syntaxErrorStatement = new SyntaxErrorStatement(catScriptParseException.getToken());
+            synchronizeTokens();
+            return syntaxErrorStatement;
+
         }
-        return new SyntaxErrorStatement(tokens.consumeToken());
+    }
+
+    private void synchronizeTokens() {
+        while(tokens.hasMoreTokens() && !(tokens.match(FUNCTION,FOR,IF,VAR,PRINT,RETURN))){
+            tokens.consumeToken();
+        }
+    }
+
+    private void throwParseError(){
+        throw new CatscriptParseException(tokens.consumeToken());
     }
 
     private Statement parseVariableStatement() {
@@ -472,9 +491,9 @@ public class CatScriptParser {
         } else if (tokens.match(LEFT_BRACKET) ){
             return parseListLiteral();
     }
-        {
-            SyntaxErrorExpression syntaxErrorExpression = new SyntaxErrorExpression(tokens.consumeToken());
-            return syntaxErrorExpression;
+        else{
+            throwParseError();
+            return null;
         }
     }
     private Expression parseFunctionCall(Token identifier) {

@@ -46,4 +46,36 @@ public class NewEvalTests extends CatscriptTestBase {
                 "print(number)"));
 
     }
+    @Test
+    void functionCallParameterAndReturn() {
+        assertEquals("6\n", executeProgram("var word = [\"q\", \"w\", \"e\" ,\"r\", \"t\", \"y\"]\n" +
+                "                function getWordLength(input : list<string>) : int {\n" +
+                "                    var length = 0\n" +
+                "                    for (c in input) {\n" +
+                "                        length = length + 1\n" +
+                "                    }\n" +
+                "                    return length\n" +
+                "                }\n" +
+                "                print(getWordLength(word))\n"));
+    }
+
+    @Test
+    void ifMathBooleanAndReturn() {
+        assertEquals("0\n", executeProgram("var number = 20\n" +
+                "                function mathGauntlet(input : int) : int {\n" +
+                "                    if (input == 1) {\n" +
+                "                       return 1 }\n" +
+                "                    if (input == 0) {\n" +
+                "                       return 0 }\n" +
+                "                    if ((-input * (input -1)) >= (input / (input + 1))) {\n" +
+                "                       var i = mathGauntlet(1)\n" +
+                "                       return i\n" +
+                "                    }\n" +
+                "                    else {\n" +
+                "                       var i = mathGauntlet(0)\n" +
+                "                       return i\n" +
+                "                    }\n" +
+                "                }\n" +
+                "                print(mathGauntlet(number))\n"));
+    }
 }

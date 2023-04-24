@@ -7,7 +7,10 @@ import edu.montana.csci.csci468.parser.ErrorType;
 import edu.montana.csci.csci468.parser.ParseError;
 import edu.montana.csci.csci468.parser.SymbolTable;
 import edu.montana.csci.csci468.parser.expressions.Expression;
+import org.objectweb.asm.Label;
+import org.objectweb.asm.Opcodes;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -93,7 +96,40 @@ public class ForStatement extends Statement {
 
     @Override
     public void compile(ByteCodeGenerator code) {
-        super.compile(code);
+
+        Integer iteratorSlot = code.nextLocalStorageSlot();
+        Label forLoopStart = new Label();
+        Label forLoopEnd = new Label();
+
+        getExpression().compile(code);
+
+        code.addMethodInstruction(Opcodes.INVOKEINTERFACE, ByteCodeGenerator.internalNameFor(List.class), "iterator",
+                "()Ljava/util/Iterator;");
+        code.addVarInstruction(Opcodes.ASTORE, iteratorSlot);
+
+        code.addLabel(forLoopStart);
+        code.addVarInstruction(Opcodes.ALOAD, iteratorSlot);
+        code.addMethodInstruction(Opcodes.INVOKEINTERFACE, ByteCodeGenerator.internalNameFor(Iterator.class), "hasNext", "()Z");
+
+        code.addJumpInstruction(Opcodes.IFEQ, forLoopEnd);
+
+        code.addMethodInstruction(Opcodes.INVOKEINTERFACE, ByteCodeGenerator.internalNameFor(Iterator.class), "next",
+                "(Ljava/lang/Object;)Z");
+        String loopVariableName = ByteCodeGenerator.internalNameFor(getComponentType().getJavaType());
+        code.addTypeInstruction(Opcodes.CHECKCAST, loopVariableName);
+        unbox(code, getComponentType());
+
+        Integer loopVarSlot = code.createLocalStorageSlotFor(variableName);
+        if (loopVariableName.equals(CatscriptType.INT) || loopVariableName.equals(CatscriptType.BOOLEAN)) {
+            code.addVarInstruction(Opcodes.ISTORE, loopVarSlot);
+        } else {
+            code.addVarInstruction(Opcodes.ASTORE, loopVarSlot);
+        }
+//        System.out.println(body.size());
+
+        body.forEach(statement -> statement.compile(code));
+
+        code.addLabel(forLoopEnd);
     }
 
 }

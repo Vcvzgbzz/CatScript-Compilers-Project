@@ -90,6 +90,7 @@ public class CatScriptParser {
                 require(RIGHT_PAREN,def);
                 if(tokens.matchAndConsume(COLON)){
                     def.setType(parseTypeExpression());
+
                 }else{
                     TypeLiteral typeLiteral = new TypeLiteral();
                     typeLiteral.setType(CatscriptType.VOID);
@@ -101,8 +102,8 @@ public class CatScriptParser {
 
 
                 List<Statement> statementList = new LinkedList();
-                this.currentFunctionDefinition = def;
 
+                this.currentFunctionDefinition = def;
                 while (!tokens.match(RIGHT_BRACE) && tokens.hasMoreTokens()) {
                     if (tokens.match(RETURN)) {
 
@@ -115,6 +116,7 @@ public class CatScriptParser {
                 def.setBody(statementList);
                 this.currentFunctionDefinition = null;
                 require(RIGHT_BRACE, def);
+
             return def;
 
         }
@@ -349,6 +351,7 @@ public class CatScriptParser {
             ReturnStatement returnStatement = new ReturnStatement();
             if(tokens.match(RETURN)){
                 returnStatement.setStart(tokens.consumeToken());
+
                 returnStatement.setFunctionDefinition(this.currentFunctionDefinition);
                 if(tokens.hasMoreTokens()&&!tokens.match(RIGHT_BRACE)){
                     returnStatement.setExpression(parseExpression());
@@ -411,7 +414,7 @@ public class CatScriptParser {
         }
         return expression;
     }
-    private Expression parseComparisonExpression(){
+    private Expression   parseComparisonExpression(){
         Expression expression = parseAdditiveExpression();
         while (tokens.match(GREATER, GREATER_EQUAL,LESS,LESS_EQUAL)) {
             Token operator = tokens.consumeToken();

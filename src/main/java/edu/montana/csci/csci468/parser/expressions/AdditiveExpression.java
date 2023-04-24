@@ -101,12 +101,26 @@ public class AdditiveExpression extends Expression {
 
     @Override
     public void compile(ByteCodeGenerator code) {
-        getLeftHandSide().compile(code);
-        getRightHandSide().compile(code);
-        if (isAdd()) {
-            code.addInstruction(Opcodes.IADD);
-        } else {
-            code.addInstruction(Opcodes.ISUB);
+        if(getType().equals(CatscriptType.STRING)){
+            getLeftHandSide().compile(code);
+            box(code,getLeftHandSide().getType());
+            if(!getLeftHandSide().getType().equals(CatscriptType.STRING)){
+                code.addMethodInstruction(Opcodes.INVOKESTATIC,ByteCodeGenerator.internalNameFor(String.class),"valueOf","(Ljava/lang/Object;)Ljava/lang/String;");
+            }
+            getRightHandSide().compile(code);
+            box(code,getRightHandSide().getType());
+            if(!getRightHandSide().getType().equals(CatscriptType.STRING)){
+                code.addMethodInstruction(Opcodes.INVOKESTATIC,ByteCodeGenerator.internalNameFor(String.class),"valueOf","(Ljava/lang/Object;)Ljava/lang/String;");
+            }
+            code.addMethodInstruction(Opcodes.INVOKEVIRTUAL,ByteCodeGenerator.internalNameFor(String.class),"concat","(Ljava/lang/String;)Ljava/lang/String;");
+        }else{
+            getLeftHandSide().compile(code);
+            getRightHandSide().compile(code);
+            if (isAdd()) {
+                code.addInstruction(Opcodes.IADD);
+            } else {
+                code.addInstruction(Opcodes.ISUB);
+            }
         }
     }
 

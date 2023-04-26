@@ -167,7 +167,9 @@ public class FunctionDefinitionStatement extends Statement {
         for(Statement stmtBdy : getBody()) {
             stmtBdy.compile(code);
         }
-        code.addInstruction(Opcodes.RETURN);
+        if (getType().equals(CatscriptType.VOID)) {
+            code.addInstruction(Opcodes.RETURN);
+        }
         code.popMethod();
     }
 }

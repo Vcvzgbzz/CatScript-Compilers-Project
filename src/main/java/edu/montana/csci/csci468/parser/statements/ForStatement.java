@@ -113,21 +113,29 @@ public class ForStatement extends Statement {
 
         code.addJumpInstruction(Opcodes.IFEQ, forLoopEnd);
 
+        code.addVarInstruction(Opcodes.ALOAD, iteratorSlot);
         code.addMethodInstruction(Opcodes.INVOKEINTERFACE, ByteCodeGenerator.internalNameFor(Iterator.class), "next",
-                "(Ljava/lang/Object;)Z");
+                "()Ljava/lang/Object;");
         String loopVariableName = ByteCodeGenerator.internalNameFor(getComponentType().getJavaType());
         code.addTypeInstruction(Opcodes.CHECKCAST, loopVariableName);
         unbox(code, getComponentType());
 
         Integer loopVarSlot = code.createLocalStorageSlotFor(variableName);
-        if (loopVariableName.equals(CatscriptType.INT) || loopVariableName.equals(CatscriptType.BOOLEAN)) {
+        if (getComponentType().equals(CatscriptType.INT) || getComponentType().equals(CatscriptType.BOOLEAN)) {
             code.addVarInstruction(Opcodes.ISTORE, loopVarSlot);
         } else {
             code.addVarInstruction(Opcodes.ASTORE, loopVarSlot);
         }
 //        System.out.println(body.size());
+//        for (Statement stmt : getBody()) {
+//            stmt.compile(code);
+//        }
 
-        body.forEach(statement -> statement.compile(code));
+        body.forEach(statement -> {
+            statement.compile(code);
+
+        });
+        code.addJumpInstruction(Opcodes.GOTO, forLoopStart);
 
         code.addLabel(forLoopEnd);
     }

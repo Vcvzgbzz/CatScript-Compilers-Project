@@ -95,17 +95,24 @@ public class VariableStatement extends Statement {
             }else{
                 code.addVarInstruction(Opcodes.ALOAD,0);
                 getExpression().compile(code);
-                code.addField(variableName,"L"+ByteCodeGenerator.internalNameFor(getType().getJavaType())+";");
+                code.addField(variableName, descriptor);
                 code.addFieldInstruction(Opcodes.PUTFIELD,getVariableName(),descriptor,code.getProgramInternalName());
             }
 
         }else{
+
                 Integer slotNum = code.createLocalStorageSlotFor(getVariableName());
                 getExpression().compile(code);
+
             if(getType().equals(CatscriptType.INT)||getType().equals(CatscriptType.BOOLEAN)) {
+                code.addField(variableName, "I");
                 code.addVarInstruction(Opcodes.ISTORE,slotNum);
+//                code.addVarInstruction(Opcodes.ILOAD,slotNum);
             }else{
+                code.addField(variableName, descriptor);
                 code.addVarInstruction(Opcodes.ASTORE,slotNum);
+
+//                code.addVarInstruction(Opcodes.ALOAD,slotNum);
             }
         }
     }

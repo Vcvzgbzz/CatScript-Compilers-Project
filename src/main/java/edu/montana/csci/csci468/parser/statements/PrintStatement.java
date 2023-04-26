@@ -43,10 +43,8 @@ public class PrintStatement extends Statement {
         code.addVarInstruction(Opcodes.ALOAD, 0);
         getExpression().compile(code);
         box(code, getExpression().getType());
-        code.addMethodInstruction(Opcodes.INVOKEVIRTUAL, ByteCodeGenerator.internalNameFor(CatScriptProgram.class),
+        code.addMethodInstruction(Opcodes.INVOKEVIRTUAL, code.getProgramInternalName(),
                 "print", "(Ljava/lang/Object;)V");
-        code.pushConstantOntoStack(true);
-
 
     }
 

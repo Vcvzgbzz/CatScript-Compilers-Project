@@ -35,7 +35,6 @@ public class CatscriptType {
         return false;
     }
 private static final Map<CatscriptType, CatscriptType> LIST_TYPES = new HashMap<>();
-    // TODO memoize this call
     public static CatscriptType getListType(CatscriptType type) {
         CatscriptType listType = LIST_TYPES.get(type);
         if(listType ==null){

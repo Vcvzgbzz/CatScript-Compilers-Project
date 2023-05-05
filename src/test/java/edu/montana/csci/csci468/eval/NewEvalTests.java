@@ -78,4 +78,32 @@ public class NewEvalTests extends CatscriptTestBase {
                 "                }\n" +
                 "                print(mathGauntlet(number))\n"));
     }
+
+    @Test
+    void basicTypesAndPrint() {
+        assertEquals("a1truenulla\n", executeProgram(
+                "    var letter = \"a\"\n" +
+                        "        var number = 1\n" +
+                        "        var boolean = true\n" +
+                        "        var lst = [\"a\"]\n" +
+                        "var nuul = null\n" +
+                        "        var toPrint = letter + number + boolean + nuul\n" +
+                        "        for (i in lst){ " +
+                        "   toPrint = toPrint + i" +
+                        "   }\n" +
+                        "        print(toPrint)"));
+
+    }
+
+    @Test
+    void fifthPrint() {
+        assertEquals("5\n", executeProgram("function fifthPrint(){\n" +
+                "    for(i in [1,2,3,4,5]){\n" +
+                "        if(i==5){\n" +
+                "            print(i)\n" +
+                "        }\n" +
+                "    }\n" +
+                "}\n" +
+                "fifthPrint()"));
+    }
 }
